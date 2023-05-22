@@ -11,7 +11,7 @@ Jenkins Pipeline Stage :-
   - Building Docker Image From Dockerfile
   - Pushing Docker Image To AWS ECR
   - Sending Kubernetes Manifest to an AWS EKS Cluster Agent
-  - Taking SSH Of EKS Cluster Agent, Creating Cluster And Node Group, And Deploying Kubernetes Manifest
+  - Taking SSH Of EKS Cluster Agent, Creating Cluster And Node Group, And Deploying K8S Manifest
   - Sending Continuous Reports Of Every Stage To A Slack Channel
 
 ```
