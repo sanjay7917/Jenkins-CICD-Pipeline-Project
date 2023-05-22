@@ -4,8 +4,8 @@ pipeline {
         maven 'Maven'
     }
     environment {
-        AWS_ACCOUNT_ID="385685296160"
-        AWS_DEFAULT_REGION="us-east-2"
+        AWS_ACCOUNT_ID="<AWS_ACCOUNT_ID>"
+        AWS_DEFAULT_REGION="<AWS_DEFAULT_REGION>"
         IMAGE_REPO_NAME="aws_k8s_image"
         IMAGE_TAG="Version_1"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
@@ -41,9 +41,9 @@ pipeline {
                     sudo apt update -y
                     sudo apt install awscli -y
                     aws s3 ls
-                    aws s3 mb s3://buck12312344 --region us-east-2
+                    aws s3 mb s3://<Bucket_Name> --region us-east-2
                     sudo mv /var/lib/jenkins/workspace/prod-deployment-pipeline/target/studentapp-2.2-SNAPSHOT.war /tmp/studentapp-2.2-SNAPSHOT${BUILD_ID}.war
-                    aws s3 cp /tmp/studentapp-2.2-SNAPSHOT${BUILD_ID}.war  s3://buck12312344/
+                    aws s3 cp /tmp/studentapp-2.2-SNAPSHOT${BUILD_ID}.war  s3://<Bucket_Name>/
                     sudo rm -rvf /tmp/studentapp-2.2-SNAPSHOT${BUILD_ID}.war
                     '''
                 }
@@ -55,7 +55,7 @@ pipeline {
                 slackSend channel: 'deployment', message: 'Pulling Artifact From AWS S3 Bucket'
                 withAWS(credentials: 'aws', region: 'us-east-2') {
                     script {
-                        sh 'aws s3 cp s3://buck12312344/studentapp-2.2-SNAPSHOT${BUILD_ID}.war .'
+                        sh 'aws s3 cp s3://<Bucket_Name>/studentapp-2.2-SNAPSHOT${BUILD_ID}.war .'
                         sh 'mv studentapp-2.2-SNAPSHOT${BUILD_ID}.war student.war'
                     }
                 }
@@ -88,7 +88,7 @@ pipeline {
             steps {
                 slackSend channel: 'deployment', message: 'Sending K8S Deployment Manifest To EKS Cluster Server'
                 sshagent(['ubuntu']) {
-                    sh "scp -o StrictHostKeyChecking=no deploysvc.yml ubuntu@3.139.84.3:/home/ubuntu"
+                    sh "scp -o StrictHostKeyChecking=no deploysvc.yml ubuntu@<IP_Of_EKS_Cluster_Agent>:/home/ubuntu"
                 }
                 slackSend channel: 'deployment', message: 'K8S Deployment Manifest Transfered Successfully'
             }
@@ -98,7 +98,7 @@ pipeline {
                 slackSend channel: 'deployment', message: 'Creating AWS EKS Cluster, Nodegroup and Deploying K8S Manifest On Slave Nodes'
                 withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'id_rsa', usernameVariable: 'eks')]) {
                     sh'''
-                    sudo ssh -i ${id_rsa} -T -o StrictHostKeyChecking=no ubuntu@3.139.84.3<<EOF
+                    sudo ssh -i ${id_rsa} -T -o StrictHostKeyChecking=no ubuntu@<IP_Of_EKS_Cluster_Agent><<EOF
                     pwd
                     ls
                     kubectl version --short --client
