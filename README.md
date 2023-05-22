@@ -2,7 +2,7 @@
 # Complete Jenkins CICD Pipeline Project
 
 ```
-Jenkins Pipeline Stage :-
+Jenkins Pipeline Stages :-
   - Cloning Repository From GitHub To Jenkins Workspace Using Git Checkout
   - Building Artifact Using Maven
   - Code Quality Check Using SonarQube
