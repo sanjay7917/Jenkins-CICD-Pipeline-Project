@@ -17,8 +17,9 @@ Jenkins Pipeline Stage :-
 ```
 ```
 Jenkins Plugins Used :-
-  - SSH Agent
+  - Git
   - Maven
+  - SSH Agent
   - Docker
   - Docker Pipeline
   - Pipeline: AWS Steps
