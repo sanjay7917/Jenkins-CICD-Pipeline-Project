@@ -6,8 +6,8 @@ pipeline {
     environment {
         AWS_ACCOUNT_ID="<AWS_ACCOUNT_ID>"
         AWS_DEFAULT_REGION="<AWS_DEFAULT_REGION>"
-        IMAGE_REPO_NAME="aws_k8s_image"
-        IMAGE_TAG="Version_1"
+        IMAGE_REPO_NAME="<IMAGE_REPO_NAME>"
+        IMAGE_TAG="<IMAGE_TAG>"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
     }
     stages {
@@ -147,5 +147,4 @@ pipeline {
         }
     }
 }
-
 
