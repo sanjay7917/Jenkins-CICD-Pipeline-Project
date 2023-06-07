@@ -33,6 +33,12 @@ pipeline {
                 slackSend channel: 'deployment', message: 'Code Quality Check Report Transfered On SonarQube Server'
             }
         }
+        stage("sonarqube-quality-gate-check") {
+            steps {
+                waitForQualityGate abortPipeline: true
+                slackSend channel: 'deployment', message: 'Code Quality Gate Report Transfered On SonarQube Server'
+            }
+        }
         stage('artifact-to-s3') {
             steps {
                 slackSend channel: 'deployment', message: 'Sending Artifact On AWS S3 Bucket'
